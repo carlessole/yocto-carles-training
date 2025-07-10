@@ -4,3 +4,6 @@
 [submodule "meta-carles"]
 	path = meta-carles
 	url = https://github.com/carlessole/meta-carles.git
+[submodule "meta-raspberrypi"]
+	path = meta-raspberrypi
+	url = git://git.yoctoproject.org/meta-raspberrypi

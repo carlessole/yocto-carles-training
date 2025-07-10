@@ -1,0 +1,43 @@
+#!/bin/bash
+# set -e
+
+# Detect if the script is being sourced
+is_sourced() {
+  # Bash
+  if [ -n "$BASH_VERSION" ]; then
+    [[ "${BASH_SOURCE[0]}" != "$0" ]]
+  # Zsh
+  elif [ -n "$ZSH_NAME" ]; then
+    case $ZSH_EVAL_CONTEXT in *:file) return 1;; esac
+    return 0
+  else
+    return 1  # Unknown shell, assume not sourced
+  fi
+}
+
+if ! is_sourced; then
+  echo "ERROR: This script must be sourced. Use:"
+  echo "  source setup-environment [build-dir]"
+  exit 1
+fi
+
+# Use first argument as build dir, or fallback to 'build'
+BUILD_DIR="${1:-build}"
+
+# Get the absolute path to the directory where this script is located
+if [ -n "$BASH_SOURCE" ]; then
+  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+elif [ -n "$ZSH_NAME" ]; then
+  SCRIPT_DIR="$( cd "$( dirname "${(%):-%N}" )" && pwd )"
+else
+  echo "Unsupported shell. Please use bash or zsh."
+  return 1
+fi
+
+# # Source the official Poky script to enter the Yocto build environment
+source "$SCRIPT_DIR/poky/oe-init-build-env" "$BUILD_DIR"
+
+# Copy configuration files only if they don't already exist
+#[ ! -f "$SCRIPT_DIR/$BUILD_DIR/conf/local.conf" ] && cp "$SCRIPT_DIR/conf/local.conf" "$SCRIPT_DIR/$BUILD_DIR/conf/local.conf"
+#[ ! -f "$SCRIPT_DIR/$BUILD_DIR/conf/bblayers.conf" ] && cp "$SCRIPT_DIR/conf/bblayers.conf" "$SCRIPT_DIR/$BUILD_DIR/conf/bblayers.conf"
+
