@@ -7,3 +7,9 @@
 [submodule "meta-raspberrypi"]
 	path = meta-raspberrypi
 	url = git://git.yoctoproject.org/meta-raspberrypi
+[submodule "meta-everest"]
+	path = meta-everest
+	url = https://github.com/EVerest/meta-everest
+[submodule "meta-openembedded"]
+	path = meta-openembedded
+	url = git://git.openembedded.org/meta-openembedded
